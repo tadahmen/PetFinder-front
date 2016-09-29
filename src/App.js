@@ -10,6 +10,7 @@ class App extends React.Component {
         return (
             <div>
                 <Header/>
+                
                 <Pets/>
                 <AddPet/>
             </div>
