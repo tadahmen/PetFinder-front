@@ -1,21 +1,8 @@
 import React from 'react';
 import './stylesheets/app.scss';
+import Pets from './pets';
 
 class App extends React.Component {
-    constructor() {
-    super()
-
-    this.state = {
-          header: "PetFinder",
-          count: 2,
-          pets: ["Koala Jaap", "Kip Jacqueline"],
-        }
-  }
-
-  listPets() {
-      let pet=0;
-      return <li> {this.state.pets[pet]} </li>;
-  }
 
   addPet() {
       newPet=$('pet').val
@@ -25,12 +12,9 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <h1>{this.state.pets[0]}</h1>
+                <h1>PetFinder</h1>
+                <Pets/>
                 <form>
-                    <p> missing pets:</p>
-                    <ul>
-                        {this.listPets()}
-                    </ul>
                     <input id='pet' type='text' placeholder="name of pet" autofocus></input>
                 </form>
             </div>
