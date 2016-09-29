@@ -8,7 +8,7 @@ class Pets extends React.Component {
           count: 2,
           pets: ["Koala Jaap", "Kip Jacqueline"],
         }
-  }
+    }
 
   listPets() {
       let petArray = this.state.pets;
