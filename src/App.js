@@ -1,22 +1,17 @@
 import React from 'react';
 import './stylesheets/app.scss';
+import Header from './header';
 import Pets from './pets';
+import AddPet from './addpet';
 
 class App extends React.Component {
-
-  addPet() {
-      newPet=$('pet').val
-    // do ajax post request for pet
-  }
 
     render() {
         return (
             <div>
-                <h1>PetFinder</h1>
+                <Header/>
                 <Pets/>
-                <form>
-                    <input id='pet' type='text' placeholder="name of pet" autofocus></input>
-                </form>
+                <AddPet/>
             </div>
         );
     }
