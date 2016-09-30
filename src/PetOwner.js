@@ -1,14 +1,13 @@
 import React from 'react';
 import Pets from './pets';
 import AddPet from './addpet';
-import PetOwner from './petowner'
 
 
-class App extends React.Component {
+class PetOwner extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id="pet-owner" onClick={this.props.onClick}>
                 <Pets/>
                 <AddPet/>
             </div>
@@ -16,4 +15,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default PetOwner;
