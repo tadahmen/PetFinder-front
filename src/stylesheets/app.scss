@@ -21,9 +21,10 @@ $rounded-corner: 17px;
     left: 0;
     bottom: 0;
     right: 0;
-    opacity: 0.2;
+    opacity: 0.5;
     position: absolute;
-    z-index: -1;
+    transition: opacity 1.5s ease-in-out;
+    // z-index: -1;
     }
 }
 
@@ -47,12 +48,20 @@ h1 {color: orange;}
 }
 
 .owner {
+    #pet-owner::after {
+        opacity: 0;
+    }
+
     #pet-finder:hover {
         transform: translate(-15px, 0px);
     };
 }
 
 .finder {
+    #pet-finder::after {
+        opacity: 0;
+    }
+
     #pet-owner {
         z-index:1
     }
@@ -73,7 +82,7 @@ h1 {color: orange;}
 
 #pet-finder {
     position: relative;
-    transition: left 1s, transform 1s;
+    transition: left 1s, transform 1s, opacity 1s;
     -webkit-transition: left 1s, transform 1s;
 
     @include tile;
