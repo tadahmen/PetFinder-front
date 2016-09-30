@@ -1,11 +1,83 @@
+$primary-color: turquoise;
+$secondary-color: white;
+$rounded-corner: 17px;
+
+@mixin tile {
+    display: inline-block;
+
+    width: 49%;
+    height: 75vh;
+    border: 10px solid;
+    border-color: lightgreen lightgreen green green;
+    border-radius: $rounded-corner;
+
+    background: $primary-color;
+}
+@mixin glass {
+    &::after {
+    content: "";
+    background: green;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0.2;
+    position: absolute;
+    z-index: -1;
+    }
+}
+
+@mixin center-content {
+    display: flex;
+    justify-content: center;
+}
+
 #header {
     height: 100px;
     width: auto;
 
     background: ivory;
-
-
 }
+
 h1 {color: orange;}
 
-// #pet-list {list-style-type: none;}
+#flex-container {
+    position: relative;
+    @include center-content;
+}
+
+.owner {
+    #pet-finder:hover {
+        transform: translate(-15px, 0px);
+    };
+}
+
+.finder {
+    #pet-owner {
+        z-index:1
+    }
+    #pet-owner:hover {
+        transform: translate(15px, 0px);
+    };
+}
+
+#pet-owner {
+    position: relative;
+    transition: left 1s, transform 1s;
+    -webkit-transition: left 1s, transform 1s;
+
+
+    @include tile;
+    @include glass;
+}
+
+#pet-finder {
+    position: relative;
+    transition: left 1s, transform 1s;
+    -webkit-transition: left 1s, transform 1s;
+
+    @include tile;
+    @include glass;
+}
+
+#pet-list {list-style-type: none;}
