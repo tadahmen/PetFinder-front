@@ -19,7 +19,7 @@ class App extends React.Component {
     moveRight() {
         console.log("from App->moveRight()");
         this.setState({
-            divPosition: {left:'45%'},
+            divPosition: {left:'45%', transition: 'left 1s'},
             activeScreen: 'owner',
         });
     }

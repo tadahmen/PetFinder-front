@@ -6,7 +6,7 @@ class Pets extends React.Component {
 
     this.state = {
           count: 2,
-          pets: ["Koala Jaap", "Kip Jacqueline"],
+          pets: [{id: 1, name: "Koala Jaap"}, {id: 2, name: "Kip Jacqueline"}],
         }
     }
 
@@ -15,7 +15,7 @@ class Pets extends React.Component {
 
       return petArray.map(function (pet) {
           console.log(pet + " (from App.js->listPets)");
-          return <li> {pet} </li>;
+          return <li key={pet.id}> {pet.name} </li>;
       });
   }
 
