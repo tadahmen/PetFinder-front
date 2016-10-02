@@ -23,7 +23,7 @@ $rounded-corner: 17px;
     right: 0;
     opacity: 0.5;
     position: absolute;
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 1.5s ease-in-out, z-index 0s linear 1.5s;
     // z-index: -1;
     }
 }
@@ -45,11 +45,15 @@ h1 {color: orange;}
 #flex-container {
     position: relative;
     @include center-content;
+
+    transition: width 1s;
+    -webkit-transition: width 1s;
 }
 
 .owner {
     #pet-owner::after {
         opacity: 0;
+        z-index: -1;
     }
 
     #pet-finder:hover {
@@ -60,6 +64,7 @@ h1 {color: orange;}
 .finder {
     #pet-finder::after {
         opacity: 0;
+        z-index: -1; // to 'remove' glass-tile from top (otherwise UI-elements on pet-finder won't work)
     }
 
     #pet-owner {
@@ -72,9 +77,8 @@ h1 {color: orange;}
 
 #pet-owner {
     position: relative;
-    transition: left 1s, transform 1s;
-    -webkit-transition: left 1s, transform 1s;
-
+    transition: transform 1s;
+    -webkit-transition: transform 1s;
 
     @include tile;
     @include glass;
@@ -82,8 +86,8 @@ h1 {color: orange;}
 
 #pet-finder {
     position: relative;
-    transition: left 1s, transform 1s, opacity 1s;
-    -webkit-transition: left 1s, transform 1s;
+    transition: transform 1s;
+    -webkit-transition: transform 1s;
 
     @include tile;
     @include glass;
