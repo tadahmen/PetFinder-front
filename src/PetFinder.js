@@ -5,7 +5,8 @@ class PetFinder extends React.Component {
     render() {
         return (
             <div id="pet-finder" onClick={this.props.onClick}>
-                <p> find pets </p>
+                <h2 className="tile-title"> Find Pets </h2>
+                <button>test Click</button>
             </div>
         );
     }

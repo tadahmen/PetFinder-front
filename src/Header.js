@@ -5,7 +5,7 @@ class Header extends React.Component {
     render() {
         return (
             <div id="header">
-                <h1> PetFinder </h1>
+                <h1 id="page-title"> PetFinder </h1>
             </div>
         );
     }
