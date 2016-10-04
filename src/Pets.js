@@ -5,16 +5,15 @@ class Pets extends React.Component {
     super()
 
     this.state = {
-          count: 2,
-          pets: [{id: 1, name: "Koala Jaap"}, {id: 2, name: "Kip Jacqueline"}],
         }
     }
 
-  listPets() {
-      let petArray = this.state.pets;
 
-      return petArray.map(function (pet) {
-          console.log(pet + " (from App.js->listPets)");
+  listPets() {
+      console.log("this.props.allPets: " + this.props.allPets + " ( from Pets.js->listPets() )");
+      console.log("this.props.allPets is Array?: " + Array.isArray(this.props.allPets));
+      return this.props.allPets.map(function (pet) {
+          console.log("name of pet: " + pet.name + " (from Pets.js->listPets)");
           return <li key={pet.id}> {pet.name} </li>;
       });
   }

@@ -5,11 +5,16 @@ import AddPet from './addpet';
 
 class PetOwner extends React.Component {
 
+    // componentWillMount(){
+    // // this.setState({saveNewPet : this.props.saveNewPet.bind(this)});
+    // }
+
     render() {
         return (
             <div id="pet-owner" onClick={this.props.onClick}>
-                <Pets/>
-                <AddPet/>
+                <h2 className='tile-title'> My Pet </h2>
+                <Pets allPets={this.props.allPets}/>
+                <AddPet saveNewPet={this.props.saveNewPet.bind(this)}/>
             </div>
         );
     }
