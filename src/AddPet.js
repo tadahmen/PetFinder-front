@@ -76,6 +76,7 @@ class AddPet extends React.Component {
                         type='text'
                         key='1'
                         placeholder="name of pet"
+                        onFocus={this.addPet.bind(this)}
                         onChange={this.addPet.bind(this)}
                         onBlur={this.saveStateInDB.bind(this)}
                         autoFocus>
@@ -87,6 +88,7 @@ class AddPet extends React.Component {
                         type='text'
                         key='2'
                         placeholder="species"
+                        onFocus={this.addPet.bind(this)}
                         onChange={this.addPet.bind(this)}
                         onBlur={this.saveStateInDB.bind(this)}
                         autoFocus>
