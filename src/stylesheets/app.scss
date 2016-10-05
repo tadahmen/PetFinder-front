@@ -21,6 +21,7 @@ body {
     border-color: #6ef7de #6ef7de #64BDB2 #64BDB2;
     border-radius: $rounded-corner;
     padding: 3px green;
+    z-index: 1;
 
     background: $primary-color;
 }
@@ -92,7 +93,7 @@ body {
         z-index: -1;
     }
 
-    #pet-finder {z-index: 1}
+    // #pet-finder {z-index: 1}
 
     #pet-finder:hover {
         transform: translate(-15px, 0px);
@@ -109,7 +110,7 @@ body {
     }
 
     #pet-owner {
-        z-index:1
+        z-index:2
     }
     #pet-owner:hover {
         transform: translate(15px, 0px);
