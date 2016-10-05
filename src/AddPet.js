@@ -14,12 +14,12 @@ class AddPet extends React.Component {
     componentDidMount() {
         //show last unsaved input:
         let savedState = localStorage.inputState != undefined ? JSON.parse(localStorage.inputState).lastInput : '';
-        this.refs.petName.value = savedState.petName != undefined ? savedState.petName : '';
+        this.refs.name.value = savedState.name != undefined ? savedState.name : '';
         this.refs.species.value = savedState.species != undefined ? savedState.species : '';
         // this.setState({newPet: savedState})
-        // console.log("LocalStorage.InputState: " + JSON.parse(localStorage.inputState).lastInput.petName);
-        // let savedState = localStorage.inputState != undefined ? JSON.parse(localStorage.inputState).lastInput.petName : '';
-        // this.refs.petName.value = savedState;
+        // console.log("LocalStorage.InputState: " + JSON.parse(localStorage.inputState).lastInput.name);
+        // let savedState = localStorage.inputState != undefined ? JSON.parse(localStorage.inputState).lastInput.name : '';
+        // this.refs.name.value = savedState;
         // this.setState({newPet: savedState})
 
         // this.setState({saveNewPet : this.props.saveNewPet.bind(this)});
@@ -28,19 +28,19 @@ class AddPet extends React.Component {
     componentWillReceiveProps(nextProps) {
         //refresh last unsaved input:
         let savedState = localStorage.inputState != undefined ? JSON.parse(localStorage.inputState).lastInput : '';
-        this.refs.petName.value = savedState.petName != undefined ? savedState.petName : '';
+        this.refs.name.value = savedState.name != undefined ? savedState.name : '';
         this.refs.species.value = savedState.species != undefined ? savedState.species : '';
         // this.setState({newPet: savedState});
     }
 
     addPet(event) {
         // this.setState({newPet: {
-        // "petName" : this.refs.petName.value,
+        // "name" : this.refs.name.value,
         // "species" : this.refs.species.value
         // }});
         this.setState({
             newPet: {
-                petName: this.refs.petName.value,
+                name: this.refs.name.value,
                 species: this.refs.species.value
             },
             editing: event.target.name})
@@ -52,7 +52,7 @@ class AddPet extends React.Component {
         let that = this;
         localStorage.inputState =
             JSON.stringify({"lastInput" : {
-                "petName" : this.refs.petName.value,
+                "name" : this.refs.name.value,
                 "species" : this.refs.species.value
             }});
         this.setState({editing: "click on a field to edit it"})
@@ -64,7 +64,7 @@ class AddPet extends React.Component {
         this.props.saveNewPet(this.state.newPet);
         this.setState({
             newPet: {
-                petName: "",
+                name: "",
                 species: ""
             }})
     }
@@ -73,7 +73,7 @@ class AddPet extends React.Component {
     //     ev.preventDefault();
     //     ev.nativeEvent.stopImmediatePropagation();
     //     console.log("clearing input");
-    //     ReactDOM.findDOMNode(this.refs.petName).value = " ";
+    //     ReactDOM.findDOMNode(this.refs.name).value = " ";
     //     this.setState({newPet: " "});
     //     localStorage.inputState = JSON.stringify({"lastInput" : " "});
     // }
@@ -85,7 +85,7 @@ class AddPet extends React.Component {
                     <input
                         name='pet name'
                         className='pet'
-                        ref='petName'
+                        ref='name'
                         type='text'
                         key='1'
                         placeholder="name of pet"

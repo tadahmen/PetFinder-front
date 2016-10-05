@@ -39,6 +39,7 @@ body {
     opacity: 0.5;
     position: absolute;
     transition: opacity 1s ease-out, z-index 0s linear 1s;
+    pointer-events: none;
     }
 }
 
