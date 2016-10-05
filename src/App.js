@@ -14,6 +14,7 @@ class App extends React.Component {
         this.state = {
             divPosition: {left: '0px'},
             activeScreen: '',
+            // allPets : ''
         }
 
     }
@@ -47,7 +48,7 @@ class App extends React.Component {
     }
 
     saveNewPet(newPet, ev) {
-        ev.preventDefault();
+        // ev.preventDefault();
         // ev.stopPropagation();
         // ev.nativeEvent.stopImmediatePropagation();
 
@@ -59,7 +60,7 @@ class App extends React.Component {
 
         //save inputted pet in state:
         let id=this.state.allPets.length+1;
-        let newPetList = this.state.allPets.concat({"id" : id, "name" : newPet});
+        let newPetList = this.state.allPets.concat({"id" : id, "name" : newPet.name, "species": newPet.species});
         this.setState({allPets: newPetList});
 
         //clear input:
