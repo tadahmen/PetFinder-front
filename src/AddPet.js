@@ -39,7 +39,10 @@ class AddPet extends React.Component {
         // "species" : this.refs.species.value
         // }});
         this.setState({
-            newPet: event.target.value,
+            newPet: {
+                petName: this.refs.petName.value,
+                species: this.refs.species.value
+            },
             editing: event.target.name})
     }
 
@@ -54,6 +57,16 @@ class AddPet extends React.Component {
             }});
         this.setState({editing: "click on a field to edit it"})
         //ajax post this.state.newPet to something like: currentState (in case of accidental crash);
+    }
+
+    savePet(ev) {
+        ev.preventDefault();
+        this.props.saveNewPet(this.state.newPet);
+        this.setState({
+            newPet: {
+                petName: "",
+                species: ""
+            }})
     }
 
     // clearInput(ev) {
@@ -94,7 +107,7 @@ class AddPet extends React.Component {
                         autoFocus>
                     </input>
                     <button
-                        onClick={this.props.saveNewPet.bind(this, this.state.newPet)}
+                        onClick={this.savePet.bind(this)}
                         > Submit </button>
                 </form>
                 <p> now editing: <span id='show-edited-field'> {this.state.editing}</span> </p>
