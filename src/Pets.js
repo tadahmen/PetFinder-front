@@ -16,7 +16,7 @@ class Pets extends React.Component {
             console.log("name of pet: " + pet.name + " (from Pets.js->listPets)");
             return (
                 <tr key={pet.id}>
-                    <td> {pet.petName} </td>
+                    <td> {pet.name} </td>
                     <td> {pet.species} </td>
                 </tr>
             )
