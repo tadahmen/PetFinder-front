@@ -13,6 +13,10 @@ class PetFinder extends React.Component {
         let petsInRadius = this.state.petsInRadius;
     }
 
+    componentDidMount() {
+        this.findPets();
+    }
+
     findPets() {
         console.log("start: PetFinder.js->findPets()")
         console.log("radius is: " + this.state.radius);
@@ -20,8 +24,11 @@ class PetFinder extends React.Component {
 
         function withinDistance(pet) {
             console.log("in withinDistance()<-PetFinder.js");
-            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat));
 
+            if (pet.lastSeen == undefined) {
+                return false;
+            }
+            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat));
             console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius);
             return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius;
             //can later on use google api function instead of getDistanceInKm()
