@@ -1,34 +1,32 @@
 import React from 'react';
+import PetInFinder from './petinfinder'
 
 class PetFinder extends React.Component {
     constructor() {
         super()
 
         this.state = {
-            radius: 1,
-            petsInRadius : ["haas Joos"],
-            userPosition : [52.3435125, 4.8820532]
+            userPosition : [52.3435125, 4.8820532],
+            radius: 0.2,
+            petsInRadius : ["haas Joos"]
         }
         let petsInRadius = this.state.petsInRadius;
     }
 
     findPets() {
+        console.log("start: PetFinder.js->findPets()")
+        console.log("radius is: " + this.state.radius);
         let component = this;
+
         function withinDistance(pet) {
             console.log("in withinDistance()<-PetFinder.js");
-            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, 52.3435125, 4.8820532));
-            console.log("radius is: " + component.state.radius);
-            console.log(component.getDistanceInKm(...component.state.userPosition, 52.3435125, 4.8820532) < component.state.radius);
-            return component.getDistanceInKm(...component.state.userPosition, 52.3435125, 4.8820532) < component.state.radius;
-        }
-        console.log("start: PetFinder.js->findPets()")
-        // console.log(this.getDistanceInKm(52.3435125, 4.8820532, 52.00000, 4.00000));
-        // console.log("withinDistance: " + withinDistance(...this.state.userPosition, 52.00000, 4.00000));
-        let allPets = this.props.allPets;
+            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat));
 
-        allPets.filter(
-            withinDistance
-        ); //can later on use google api function instead
+            console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius);
+            return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius;
+            //can later on use google api function instead of getDistanceInKm()
+        }
+        let allPets = this.props.allPets;
         this.setState({ petsInRadius : allPets.filter(withinDistance) })
     }
 
@@ -49,13 +47,29 @@ class PetFinder extends React.Component {
         return d;
     }
 
-    showPetsInRadius(event) {
+    showPetsInRadius() {
         console.log("start showPetsInRadius<-PatFinder.js")
+        let component = this;
         return this.state.petsInRadius.map(function(pet) {
-            return (
-                <li key={pet.id}> {pet.name} </li>
-            )
+            console.log("pet sent as prop: " + pet);
+            return <PetInFinder key={pet.id} pet={pet}/>
         })
+    }
+
+    changeRadius() {
+        this.setState({radius: this.refs.radius.value});
+        this.findPets();
+    }
+
+    showRadius() {
+        console.log("start showRadius<-PetFinder.js")
+        let radius = this.state.radius;
+        let info = "";
+        if (radius < 1) {
+            return radius*1000 + " m"
+        } else {
+            return radius + " km";
+        }
     }
 
     render() {
@@ -66,6 +80,14 @@ class PetFinder extends React.Component {
                 { /*just for testing purposes:*/}
                 <p> your position: </p>
                 <input ref="userPosition" defaultValue="52.3435125, 4.8820532"/>
+                <p> radius: </p>
+                <input
+                    ref='radius'
+                    type = 'range'
+                    defaultValue = "0.1" max="10" step="0.1"
+                    onChange = {this.changeRadius.bind(this)}
+                />
+                <p> {this.showRadius()} </p>
                 <button onClick={this.findPets.bind(this)}> find pets </button>
 
                 <p> pets nearby: </p>
