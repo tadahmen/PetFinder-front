@@ -1,4 +1,5 @@
 import React from 'react';
+import PetInFinder from './petinfinder'
 
 class PetFinder extends React.Component {
     constructor() {
@@ -14,7 +15,7 @@ class PetFinder extends React.Component {
 
     findPets() {
         console.log("start: PetFinder.js->findPets()")
-        console.log("radius is: " + component.state.radius);
+        console.log("radius is: " + this.state.radius);
         let component = this;
 
         function withinDistance(pet) {
@@ -48,15 +49,16 @@ class PetFinder extends React.Component {
 
     showPetsInRadius() {
         console.log("start showPetsInRadius<-PatFinder.js")
+        let component = this;
         return this.state.petsInRadius.map(function(pet) {
-            return (
-                <li key={pet.id}> {pet.name} </li>
-            )
+            console.log("pet sent as prop: " + pet);
+            return <PetInFinder key={pet.id} pet={pet}/>
         })
     }
 
     changeRadius() {
-        this.setState({radius: this.refs.radius.value})
+        this.setState({radius: this.refs.radius.value});
+        this.findPets();
     }
 
     showRadius() {
@@ -84,7 +86,7 @@ class PetFinder extends React.Component {
                     type = 'range'
                     defaultValue = "0.1" max="10" step="0.1"
                     onChange = {this.changeRadius.bind(this)}
-                    />
+                />
                 <p> {this.showRadius()} </p>
                 <button onClick={this.findPets.bind(this)}> find pets </button>
 
