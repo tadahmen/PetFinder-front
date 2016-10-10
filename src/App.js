@@ -47,7 +47,7 @@ class App extends React.Component {
         })
     }
 
-    saveNewPet(newPet, ev) {
+    saveNewPet(newPet, ev) {    //saves a new pet in the db.
         // ev.preventDefault();
         // ev.stopPropagation();
         // ev.nativeEvent.stopImmediatePropagation();
@@ -68,6 +68,17 @@ class App extends React.Component {
         //ajax post this.state.newPet
     }
 
+    saveEditedPet(editedPet, ev) {     //saves changed state of existing pet in db
+        // ev.preventDefault();
+        // ev.stopPropagation();
+        // ev.nativeEvent.stopImmediatePropagation();
+
+        let changedPetList = this.state.allPets.map(function(pet) {
+            pet.id == editedPet.id ? editedPet : pet;
+        });
+        localStorage.petList = JSON.stringify({ "pets" : changedPetList });
+    }
+
     render() {
         return (
             <div id='app'>
@@ -81,10 +92,12 @@ class App extends React.Component {
                     allPets = {this.state.allPets}
                     onClick={this.moveRight.bind(this)}
                     // saveStateInDB={this.saveStateInDB.bind(this)}
-                    saveNewPet={this.saveNewPet.bind(this)}/>
+                    saveNewPet={this.saveNewPet.bind(this)}
+                    onChange = {this.saveEditedPet.bind(this)}/>
                 <PetFinder
                     allPets = {this.state.allPets}
-                    onClick={this.moveLeft.bind(this)}/>
+                    onClick= {this.moveLeft.bind(this)}
+                    onChange = {this.saveEditedPet.bind(this)}/>
             </div>
             </div>
         );

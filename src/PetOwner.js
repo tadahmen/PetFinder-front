@@ -12,9 +12,11 @@ class PetOwner extends React.Component {
     render() {
         return (
             <div id="pet-owner" onClick={this.props.onClick}>
-                <h2 className='tile-title'> My Pet </h2>
-                <Pets allPets={this.props.allPets}/>
-                <AddPet saveNewPet={this.props.saveNewPet.bind(this)}/>
+                <h2 className ='tile-title'> My Pet </h2>
+                <Pets
+                    allPets = {this.props.allPets}
+                    onChange = {this.props.onChange.bind(this)}/>
+                <AddPet saveNewPet = {this.props.saveNewPet.bind(this)}/>
             </div>
         );
     }

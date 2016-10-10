@@ -1,5 +1,5 @@
 import React from 'react';
-import PetInFinder from './petinfinder'
+import PetInRadius from './petinradius'
 
 class PetFinder extends React.Component {
     constructor() {
@@ -59,7 +59,11 @@ class PetFinder extends React.Component {
         let component = this;
         return this.state.petsInRadius.map(function(pet) {
             console.log("pet sent as prop: " + pet);
-            return <PetInFinder key={pet.id} pet={pet}/>
+            return <PetInRadius
+                key={pet.id}
+                pet={pet}
+                onChange = {component.props.onChange.bind(this)}
+            />
         })
     }
 

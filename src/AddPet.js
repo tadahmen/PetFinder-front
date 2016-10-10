@@ -48,7 +48,7 @@ class AddPet extends React.Component {
 
     saveStateInDB(ev) {
         console.log("CLICKED outside pet inputfield in addPet.js (from App->saveStateInDB)");
-        console.log("event target: " + ev.target.value);
+        // console.log("event target: " + ev.targ/et.value);
         let that = this;
         localStorage.inputState =
             JSON.stringify({"lastInput" : {
@@ -60,6 +60,7 @@ class AddPet extends React.Component {
     }
 
     savePet(ev) {
+        console.log("start savePet<-AddPet.js");
         ev.preventDefault();
         this.props.saveNewPet(this.state.newPet);
         this.setState({
