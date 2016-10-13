@@ -33,6 +33,10 @@ class App extends React.Component {
         this.setState({loggedIn : !this.state.loggedIn});
     }
 
+    setStartPage(type) {
+        this.setState({startPage: type});
+    }
+
     moveRight() {
         // console.log("from App->moveRight()");
         this.setState({
@@ -92,7 +96,8 @@ class App extends React.Component {
             <div id='app'>
                 <Header onClick={this.initialPosition.bind(this)}
                     loggedIn = {this.state.loggedIn}
-                    onChange = {this.toggleLogin.bind(this)}/>
+                    onChange = {this.toggleLogin.bind(this)}
+                    setStartPage = {this.setStartPage.bind(this)}/>
 
                     {this.state.loggedIn == true
                         ?   <div
@@ -110,7 +115,9 @@ class App extends React.Component {
                                     onClick= {this.moveLeft.bind(this)}
                                     onChange = {this.saveEditedPet.bind(this)}/>
                             </div>
-                        :   <StartPage onChange = {this.toggleLogin.bind(this)}/>
+                        :   <StartPage
+                                onChange = {this.toggleLogin.bind(this)}
+                                pageType = {this.state.startPage}/>
                     }
 
             </div>

@@ -10,7 +10,8 @@ class Header extends React.Component {
                 <h1 id="page-title"> PetFinder </h1>
                 <LoginStatus
                 loggedIn = {this.props.loggedIn}
-                onChange = {this.props.onChange.bind(this)}/>
+                onChange = {this.props.onChange.bind(this)}
+                setStartPage = {this.props.setStartPage.bind(this)}/>
             </div>
         );
     }

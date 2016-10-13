@@ -13,9 +13,9 @@ class StartPage extends React.Component {
     render() {
         return (
             <div id="start-page">
-                <h1 className="tile-title"> Login </h1>
+                <h1 className="tile-title"> {this.props.pageType} </h1>
                 <div className="tile-content">
-                    <p> login </p>
+                    <p> name: &nbsp; </p>
                     <input ref="name" placeholder = "your name"/>
                     <button onClick = {this.checkLogin.bind(this)}> submit </button>
                 </div>
