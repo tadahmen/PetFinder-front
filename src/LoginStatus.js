@@ -2,17 +2,8 @@ import React from 'react';
 
 class LoginStatus extends React.Component {
 
-    constructor() {
-        super()
-
-        this.state = {
-            loggedIn : false //sessionStorage.loggedin,
-            // allPets : ''
-        }
-    }
-
-    toggleLogin() {
-        this.setState({loggedIn : !this.state.loggedIn})
+    showLogin(ev) {
+        this.props.setStartPage(ev.target.outerText);
     }
 
     render() {
@@ -20,8 +11,8 @@ class LoginStatus extends React.Component {
             <ul id="login-status">
                 {this.props.loggedIn ? <li onClick = {this.props.onChange.bind(this)}> logout </li>
                     : <span>
-                        <li onClick = {this.props.onChange.bind(this)}>login</li>
-                        <li onClick = {this.props.onChange}>sign in </li>
+                        <li onClick = {this.showLogin.bind(this)}>login</li>
+                        <li onClick = {this.showLogin.bind(this)}>sign in </li>
                     </span>
                 }
             </ul>
