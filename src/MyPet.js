@@ -25,12 +25,12 @@ class MyPet extends React.Component {
 //add pet to 'my-list' of pets I want to search for
     }
 
-    saveNewStatus(status) {
+    saveNewStatus(status, ev) {
         console.log("start saveNewState()<-PetInRadius.js");
         let editedPet = this.props.pet;
         editedPet.status = status;
         status == "found" ? this.setState({style: {color: 'green'}}) : 0;
-        this.props.onChange.bind(this, editedPet);
+        this.props.onChange(editedPet, ev);
     }
 
     render() {
