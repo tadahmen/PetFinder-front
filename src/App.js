@@ -2,6 +2,7 @@
 import React from 'react';
 import './stylesheets/app.scss';
 import Header from './header';
+import StartPage from './startpage';
 import PetOwner from './petowner';
 import PetFinder from './petfinder';
 
@@ -14,15 +15,22 @@ class App extends React.Component {
         this.state = {
             divPosition: {left: '0px'},
             activeScreen: '',
+            loggedIn : (sessionStorage.loggedIn != undefined ? sessionStorage.loggedIn=="true" : false),
             // allPets : ''
         }
-
     }
 
     componentWillMount() {
         let allPets = JSON.parse(localStorage.petList).pets;    //For the moment, I'm using localStorage as db. I specified the initial data.
         this.setState({allPets: allPets});
         this.saveNewPet = this.saveNewPet.bind(this);
+    }
+
+    toggleLogin() {
+        console.log("start toggleLogin<-App.js");
+
+        sessionStorage.loggedIn = !this.state.loggedIn;
+        this.setState({loggedIn : !this.state.loggedIn});
     }
 
     moveRight() {
@@ -82,23 +90,29 @@ class App extends React.Component {
     render() {
         return (
             <div id='app'>
-            <Header onClick={this.initialPosition.bind(this)}/>
-            <div
-                id="flex-container"
-                className={this.state.activeScreen}
-                style={this.state.divPosition}>
+                <Header onClick={this.initialPosition.bind(this)}
+                    loggedIn = {this.state.loggedIn}
+                    onChange = {this.toggleLogin.bind(this)}/>
 
-                <PetOwner
-                    allPets = {this.state.allPets}
-                    onClick={this.moveRight.bind(this)}
-                    // saveStateInDB={this.saveStateInDB.bind(this)}
-                    saveNewPet={this.saveNewPet.bind(this)}
-                    onChange = {this.saveEditedPet.bind(this)}/>
-                <PetFinder
-                    allPets = {this.state.allPets}
-                    onClick= {this.moveLeft.bind(this)}
-                    onChange = {this.saveEditedPet.bind(this)}/>
-            </div>
+                    {this.state.loggedIn == true
+                        ?   <div
+                                id="flex-container"
+                                className={this.state.activeScreen}
+                                style={this.state.divPosition}>
+                                <PetOwner
+                                    allPets = {this.state.allPets}
+                                    onClick={this.moveRight.bind(this)}
+                                    // saveStateInDB={this.saveStateInDB.bind(this)}
+                                    saveNewPet={this.saveNewPet.bind(this)}
+                                    onChange = {this.saveEditedPet.bind(this)}/>
+                                <PetFinder
+                                    allPets = {this.state.allPets}
+                                    onClick= {this.moveLeft.bind(this)}
+                                    onChange = {this.saveEditedPet.bind(this)}/>
+                            </div>
+                        :   <StartPage onChange = {this.toggleLogin.bind(this)}/>
+                    }
+
             </div>
         );
     }

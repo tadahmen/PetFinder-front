@@ -1,23 +1,33 @@
+@import 'reset';
+
+
+//Variables===============================================
 $primary-color: #2DEDC0;
 $secondary-color: white;
 $rounded-corner: 17px;
 
-body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-li {
-    list-style-type: none;
+//Mixins===================================================
+@mixin page-title($font-size: 100px) {
+    // @include vertical-center-txt(10px);
+    font-size: $font-size;
+    margin: 0.1*$font-size 0;
+    text-align: center;
+    color: #45a196;
+    text-shadow: 8px 8px 10px $primary-color;
 }
 
 @mixin tile {
+    .tile-title {
+        font-size: 50px;
+        text-align: center;
+    }
+
     display: inline-block;
 
     width: 49%;
     height: 75vh;
-    padding: 0 30px;
+    padding: 50px 80px;
     margin: 2px;
     border-width: 10px 10px 16px 16px;
     box-shadow: -3px 3px 5px 5px white inset;
@@ -58,30 +68,57 @@ li {
     line-height: $element-height;
 }
 
-#header {
-    @include center-content;
 
-    width: auto;
+//Elements==============================================
+body {
+    box-sizing: border-box;
+}
+
+li {
+    list-style-type: none;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    #page-title {@include page-title(110px)};
+    #login-status {
+        height: 30px;
+        width: 50px;
+        margin: 20px 3%;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+
+        background: lightgrey;
+        color: $secondary-color;
+    }
+
     margin-bottom: 2px;
     // border-top: 15px groove;
     border-bottom: 15px double; //groove; //double
     border-color: #6ef7de; //#45a196 #89c1a7;
 
     background: white;
-
-    #page-title {
-        @include vertical-center-txt(10px);
-        font-size: 100px;
-        text-align: center;
-        color: #45a196;
-        text-shadow: 8px 8px 10px $primary-color}
 }
 
-
-
-.tile-title {
-    font-size: 50px;
-    text-align: center;
+#start-page {
+    @include tile;
+    .tile-content {
+        height: 100px;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        align-content: center;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 90%;
+    margin: auto;
+    // align-content: center;
+    box-sizing: border-box;
 }
 
 #flex-container {
@@ -124,17 +161,13 @@ li {
 }
 
 #pet-owner, #pet-finder {
+    @include tile;
+    @include glass;
+
     box-sizing: border-box;
     position: relative;
     transition: transform 1s;
     -webkit-transition: transform 1s;
-
-    @include tile;
-    @include glass;
-}
-
-#pet-finder {
-    
 }
 
 #pet-list {list-style-type: none;}
