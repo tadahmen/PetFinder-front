@@ -5,6 +5,7 @@ import Header from './header';
 import StartPage from './startpage';
 import PetOwner from './petowner';
 import PetFinder from './petfinder';
+import jQuery from 'jquery';
 
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
@@ -21,9 +22,13 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        let allPets = JSON.parse(localStorage.petList).pets;    //For the moment, I'm using localStorage as db. I specified the initial data.
-        this.setState({allPets: allPets});
+            //For the moment, I'm using localStorage as db. I specified the initial data.
         this.saveNewPet = this.saveNewPet.bind(this);
+        let component = this;
+        jQuery.getJSON('http://localhost:5000/api/pets', function(data) {
+            component.setState({allPets: data.pets});
+            console.log(data);
+        })
     }
 
     toggleLogin() {

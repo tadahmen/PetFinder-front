@@ -70,6 +70,8 @@ $rounded-corner: 17px;
 
 
 //Elements==============================================
+html { overflow-x: hidden}  //removes horizontal scrollbar
+
 body {
     box-sizing: border-box;
 }
@@ -107,7 +109,12 @@ li {
     @include tile;
     .tile-content {
         align-self: center;
+        margin-top: 5vh;
     }
+    form *{
+        display: block;
+    }
+    input {margin-bottom: 10px;}
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
