@@ -70,12 +70,6 @@ class App extends React.Component {
         // ev.stopPropagation();
         // ev.nativeEvent.stopImmediatePropagation();
 
-        //these lines are just for checking the values:
-        // console.log("clicked submit in AddPet.js (from AddPet->saveNewPet)");
-        // this.setState({"event in saveNewPet": ev});
-        // console.log("arg passed by submit in AddPet.js: " + arg + " (from App.js->saveNewPet)");
-        // console.log("first arrg: " + arg[0] + ", second arg: " + arg[1]);
-
         //save inputted pet in state:
         let id=this.state.allPets.length+1;
         let newPetList = this.state.allPets.concat({"id" : id, "name" : newPet.name, "species": newPet.species});
@@ -83,7 +77,23 @@ class App extends React.Component {
 
         //clear input:
         localStorage.inputState = JSON.stringify({"lastInput" : " "});
-        //ajax post this.state.newPet
+
+        //ajax post newPet
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:5000/api/pets.json",
+            data: JSON.stringify({
+                pet: newPet
+            }),
+            contentType: "application/json",
+            dataType: "json"
+            })
+            .done(function(data) {
+                console.log( "saved pet: " + data );
+            })
+            .fail(function(error) {
+                console.log("pet wasn't saved: " + error);
+        });
     }
 
     saveEditedPet(editedPet, ev) {     //saves changed state of existing pet in db
