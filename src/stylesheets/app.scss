@@ -70,6 +70,8 @@ $rounded-corner: 17px;
 
 
 //Elements==============================================
+html { overflow-x: hidden}  //removes horizontal scrollbar
+
 body {
     box-sizing: border-box;
 }
@@ -107,6 +109,16 @@ li {
     @include tile;
     .tile-content {
         align-self: center;
+        margin-top: 5vh;
+    }
+    form *{
+        display: block;
+    }
+    input {margin-bottom: 10px;}
+    #login-message {
+        height: 2em;
+        width: 173px;
+        margin: 10px 0;
     }
     display: flex;
     flex-direction: column;
@@ -165,6 +177,10 @@ li {
     position: relative;
     transition: transform 1s;
     -webkit-transition: transform 1s;
+    #map {
+        height: 250px;
+        border-radius: $rounded-corner
+    }
 }
 
 #pet-list {list-style-type: none;}

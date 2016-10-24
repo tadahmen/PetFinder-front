@@ -1,5 +1,7 @@
 import React from 'react';
-import PetInRadius from './petinradius'
+import PetInRadius from './petinradius';
+import jQuery from 'jquery';
+
 
 class PetFinder extends React.Component {
     constructor() {
@@ -103,6 +105,9 @@ class PetFinder extends React.Component {
 
                 <p> pets nearby: </p>
                 <ul> {this.showPetsInRadius()} </ul>
+
+                <div id="map"></div>
+
             </div>
         );
     }

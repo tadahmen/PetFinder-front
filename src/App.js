@@ -5,6 +5,7 @@ import Header from './header';
 import StartPage from './startpage';
 import PetOwner from './petowner';
 import PetFinder from './petfinder';
+import jQuery from 'jquery';
 
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
@@ -21,14 +22,42 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        let allPets = JSON.parse(localStorage.petList).pets;    //For the moment, I'm using localStorage as db. I specified the initial data.
-        this.setState({allPets: allPets});
+            //For the moment, I'm using localStorage as db. I specified the initial data.
         this.saveNewPet = this.saveNewPet.bind(this);
+        this.loadPets(); //voor testen rails sessionstorage
+    }
+
+    loadPets() {
+        let component = this;
+        jQuery.ajax({
+            url: 'http://localhost:5000/api/pets',
+            type: 'GET',
+            data: {session_id: sessionStorage.sessionId},
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+           },
+           success: function (response) {
+                component.setState({allPets: response.pets});
+                console.log(response)
+            },
+            error: function () {
+                alert("error");
+            }
+        })
+        // console.log("sessionStorage: " + sessionStorage.sessionStorageId);
+        // jQuery.getJSON('http://localhost:5000/api/pets', (function(data) {
+        //     this.setState({allPets: data.pets});
+        //     console.log(data);
+        // }).bind(this))
     }
 
     toggleLogin() {
         console.log("start toggleLogin<-App.js");
-        this.setState({startPage: "login"});
+
+        this.loadPets();
+        this.setState({startPage: "lo gin"});
 
         sessionStorage.loggedIn = !this.state.loggedIn;
         this.setState({loggedIn : !this.state.loggedIn});
@@ -65,12 +94,6 @@ class App extends React.Component {
         // ev.stopPropagation();
         // ev.nativeEvent.stopImmediatePropagation();
 
-        //these lines are just for checking the values:
-        // console.log("clicked submit in AddPet.js (from AddPet->saveNewPet)");
-        // this.setState({"event in saveNewPet": ev});
-        // console.log("arg passed by submit in AddPet.js: " + arg + " (from App.js->saveNewPet)");
-        // console.log("first arrg: " + arg[0] + ", second arg: " + arg[1]);
-
         //save inputted pet in state:
         let id=this.state.allPets.length+1;
         let newPetList = this.state.allPets.concat({"id" : id, "name" : newPet.name, "species": newPet.species});
@@ -78,7 +101,21 @@ class App extends React.Component {
 
         //clear input:
         localStorage.inputState = JSON.stringify({"lastInput" : " "});
-        //ajax post this.state.newPet
+
+        //ajax post newPet
+        jQuery.ajax({
+            type: "POST",
+            url: "http://localhost:5000/api/pets.json",
+            data: JSON.stringify({
+                pet: newPet
+            }),
+            contentType: "application/json",
+            dataType: "json"
+        }).done(function(data) {
+            console.log( "saved pet: " + data );
+        }).fail(function(error) {
+            console.log("pet wasn't saved: " + error);
+        });
     }
 
     saveEditedPet(editedPet, ev) {     //saves changed state of existing pet in db
