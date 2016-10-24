@@ -33,11 +33,29 @@ class MyPet extends React.Component {
         this.props.onChange(editedPet, ev);
     }
 
+    style() {
+        let petStatus = this.props.pet.status;
+        let style = {};
+
+        switch(this.props.pet.status) {
+            case "found":
+                style = {color: 'green'}
+                break;
+            case "reported-found":
+                style = {color: 'orange'}
+                break;
+            default:
+                style = {color : 'white'}
+        }
+        return style;
+    }
+    
+
     render() {
         return (
                 <tr id="pet-in-finder"
                     key={this.props.pet.id}
-                    style = {this.props.pet.status == "found" ? {color: 'green'} : (this.props.pet.status == "reported-found" ? {color: 'orange'} : {color : 'white'})}
+                    style = {this.style()}
                     onMouseEnter={this.showOptions.bind(this)}
                     onMouseLeave={this.hideOptions.bind(this)}>
                     <td> {this.props.pet.name} </td>

@@ -2,6 +2,13 @@ import React from 'react';
 import jQuery from 'jquery';
 
 class StartPage extends React.Component {
+    constructor() {
+        super()
+
+        this.state = {
+            loginMessage: ' '
+        }
+    }
 
     // componentWillMount(){
     // // this.setState({saveNewPet : this.props.saveNewPet.bind(this)});
@@ -11,8 +18,30 @@ class StartPage extends React.Component {
         ev.preventDefault();
         let username = this.refs.username.value;
         let password = this.refs.password.value;
+        let component = this;
         //ajax request to validate login
-        ((username != '') && (password != '') /* check combination in db*/) ? this.props.onChange() : 0;
+        // ((username != '') && (password != '') /* check combination in db*/)
+        jQuery.ajax({
+            url: 'http://localhost:5000/api/users/login',
+            type: 'POST',
+            data: JSON.stringify({"user":{"username": username, "password": password}}),
+            contentType: 'application/json; charset=utf-8',
+            xhrFields: {
+                withCredentials: true
+           },
+            success: function (response) {
+                if (response.login) {
+                    console.log (response);
+                    sessionStorage.sessionId = response.session_id;
+                    component.props.onChange()
+                } else {
+                    component.setState({loginMessage: "Invalid login. Check spelling & try again."})
+                }
+            },
+            error: function () {
+                alert("error");
+            }
+        })
     }
 
     checkSignUp(ev) {
@@ -38,6 +67,7 @@ class StartPage extends React.Component {
                         <input ref="username" id="username" placeholder = "your name" autoFocus/>
                         <p> <label htmlFor = "password"> password: &nbsp; </label> </p>
                         <input ref="password" id = "password" placeholder = "your password"/>
+                        <div id="login-message">{this.state.loginMessage}</div>
                         <button onClick = {this.checkLogin.bind(this)}> submit </button>
                     </form>
                 :

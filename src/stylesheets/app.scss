@@ -115,6 +115,11 @@ li {
         display: block;
     }
     input {margin-bottom: 10px;}
+    #login-message {
+        height: 2em;
+        width: 173px;
+        margin: 10px 0;
+    }
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -172,6 +177,10 @@ li {
     position: relative;
     transition: transform 1s;
     -webkit-transition: transform 1s;
+    #map {
+        height: 250px;
+        border-radius: $rounded-corner
+    }
 }
 
 #pet-list {list-style-type: none;}

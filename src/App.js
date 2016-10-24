@@ -24,16 +24,40 @@ class App extends React.Component {
     componentWillMount() {
             //For the moment, I'm using localStorage as db. I specified the initial data.
         this.saveNewPet = this.saveNewPet.bind(this);
+        this.loadPets(); //voor testen rails sessionstorage
+    }
+
+    loadPets() {
         let component = this;
-        jQuery.getJSON('http://localhost:5000/api/pets', function(data) {
-            component.setState({allPets: data.pets});
-            console.log(data);
+        jQuery.ajax({
+            url: 'http://localhost:5000/api/pets',
+            type: 'GET',
+            data: {session_id: sessionStorage.sessionId},
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+           },
+           success: function (response) {
+                component.setState({allPets: response.pets});
+                console.log(response)
+            },
+            error: function () {
+                alert("error");
+            }
         })
+        // console.log("sessionStorage: " + sessionStorage.sessionStorageId);
+        // jQuery.getJSON('http://localhost:5000/api/pets', (function(data) {
+        //     this.setState({allPets: data.pets});
+        //     console.log(data);
+        // }).bind(this))
     }
 
     toggleLogin() {
         console.log("start toggleLogin<-App.js");
-        this.setState({startPage: "login"});
+
+        this.loadPets();
+        this.setState({startPage: "lo gin"});
 
         sessionStorage.loggedIn = !this.state.loggedIn;
         this.setState({loggedIn : !this.state.loggedIn});
@@ -87,12 +111,10 @@ class App extends React.Component {
             }),
             contentType: "application/json",
             dataType: "json"
-            })
-            .done(function(data) {
-                console.log( "saved pet: " + data );
-            })
-            .fail(function(error) {
-                console.log("pet wasn't saved: " + error);
+        }).done(function(data) {
+            console.log( "saved pet: " + data );
+        }).fail(function(error) {
+            console.log("pet wasn't saved: " + error);
         });
     }
 
