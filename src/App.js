@@ -14,6 +14,7 @@ class App extends React.Component {
         super()
 
         this.state = {
+            allPets: sessionStorage.allPets != undefined ? JSON.parse(sessionStorage.allPets) : [],
             divPosition: {left: '0px'},
             activeScreen: '',
             loggedIn : (sessionStorage.loggedIn != undefined ? sessionStorage.loggedIn=="true" : false),
@@ -24,7 +25,7 @@ class App extends React.Component {
     componentWillMount() {
             //For the moment, I'm using localStorage as db. I specified the initial data.
         this.saveNewPet = this.saveNewPet.bind(this);
-        this.loadPets(); //voor testen rails sessionstorage
+        // this.loadPets(); //voor testen rails sessionstorage
     }
 
     loadPets() {
@@ -40,6 +41,7 @@ class App extends React.Component {
            },
            success: function (response) {
                 component.setState({allPets: response.pets});
+                sessionStorage.allPets = JSON.stringify(response.pets);
                 console.log(response)
             },
             error: function () {
@@ -57,7 +59,7 @@ class App extends React.Component {
         console.log("start toggleLogin<-App.js");
 
         this.loadPets();
-        this.setState({startPage: "lo gin"});
+        this.setState({startPage: "login"});
 
         sessionStorage.loggedIn = !this.state.loggedIn;
         this.setState({loggedIn : !this.state.loggedIn});
@@ -126,7 +128,7 @@ class App extends React.Component {
         let changedPetList = this.state.allPets.map(function(pet) {
             pet.id == editedPet.id ? editedPet : pet;
         });
-        localStorage.petList = JSON.stringify({ "pets" : changedPetList });
+        localStorage.petList = JSON.stringify({ "pets" : changedPetList }); //use db instead
     }
 
     render() {

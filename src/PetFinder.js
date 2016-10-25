@@ -22,6 +22,7 @@ class PetFinder extends React.Component {
     findPets() {
         console.log("start: PetFinder.js->findPets()")
         console.log("radius is: " + this.state.radius);
+
         let component = this;
 
         function withinDistance(pet) {
@@ -30,11 +31,12 @@ class PetFinder extends React.Component {
             if (pet.lastSeen == undefined) {
                 return false;
             }
-            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat));
-            console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius);
+            // console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat));
+            // console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius);
             return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius;
             //can later on use google api function instead of getDistanceInKm()
         }
+
         let allPets = this.props.allPets;
         this.setState({ petsInRadius : allPets.filter(withinDistance) })
     }
@@ -57,10 +59,10 @@ class PetFinder extends React.Component {
     }
 
     showPetsInRadius() {
-        console.log("start showPetsInRadius<-PatFinder.js")
+        // console.log("start showPetsInRadius<-PatFinder.js")
         let component = this;
         return this.state.petsInRadius.map(function(pet) {
-            console.log("pet sent as prop: " + pet);
+            // console.log("pet sent as prop: " + pet);
             return <PetInRadius
                 key={pet.id}
                 pet={pet}
@@ -93,6 +95,7 @@ class PetFinder extends React.Component {
                 { /*just for testing purposes:*/}
                 <p> your position: </p>
                 <input ref="userPosition" defaultValue="52.3435125, 4.8820532"/>
+
                 <p> radius: </p>
                 <input
                     ref='radius'
