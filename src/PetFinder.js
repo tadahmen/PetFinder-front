@@ -1,14 +1,14 @@
 import React from 'react';
 import PetInRadius from './petinradius';
 import jQuery from 'jquery';
-
+import FinderMap from './findermap';
 
 class PetFinder extends React.Component {
     constructor() {
         super()
 
         this.state = {
-            userPosition : [52.3435125, 4.8820532],
+            userPosition : [4.8820532, 52.3435125],
             radius: 0.2,
             petsInRadius : ["haas Joos"]
         }
@@ -31,9 +31,9 @@ class PetFinder extends React.Component {
             if (pet.lastSeen == undefined) {
                 return false;
             }
-            // console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat));
-            // console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius);
-            return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius;
+            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat));
+            console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat) < component.state.radius);
+            return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat) < component.state.radius;
             //can later on use google api function instead of getDistanceInKm()
         }
 
@@ -73,7 +73,8 @@ class PetFinder extends React.Component {
 
     changeRadius() {
         this.setState({radius: this.refs.radius.value});
-        this.findPets();
+        let component = this;
+        setTimeout(function(){component.findPets()}, 10);
     }
 
     showRadius() {
@@ -109,7 +110,10 @@ class PetFinder extends React.Component {
                 <p> pets nearby: </p>
                 <ul> {this.showPetsInRadius()} </ul>
 
-                <div id="map"></div>
+                <FinderMap
+                    allPets = {this.props.allPets}
+                    radius = {this.state.radius}
+                />
 
             </div>
         );
