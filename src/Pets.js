@@ -13,7 +13,7 @@ class Pets extends React.Component {
         console.log("this.props.allPets: " + this.props.allPets + " ( from Pets.js->listPets() )");
         console.log("this.props.allPets is Array?: " + Array.isArray(this.props.allPets));
         let component = this;
-        return (this.props.allPets.map(function (pet) {
+        return (this.props.myPets.map(function (pet) {
             console.log("name of pet: " + pet.name + " (from Pets.js->listPets)");
             return <MyPet
                 key = {pet.id}

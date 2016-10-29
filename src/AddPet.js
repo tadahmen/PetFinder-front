@@ -105,7 +105,7 @@ class AddPet extends React.Component {
                         onFocus={this.addPet.bind(this)}
                         onChange={this.addPet.bind(this)}
                         onBlur={this.saveStateInDB.bind(this)}
-                        autoFocus>
+                        >
                     </input>
                     <button
                         onClick={this.savePet.bind(this)}
