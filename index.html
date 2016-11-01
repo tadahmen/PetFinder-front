@@ -1,21 +1,12 @@
 <!doctype html>
 <html>
   <head>
-    <title>React Transform Boilerplate</title>
+    <title>PetFinder</title>
     <link rel="stylesheet" type="text/css" href="./style.css">
   </head>
   <body>
     <div id="root"></div>
+    <script id='findermap-script'></script>
     <script src="/static/bundle.js"></script>
   </body>
-  <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 52.3435125, lng: 4.8820532},
-          zoom: 15
-        });
-      }
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7YAekZlk5wu9wbtpstsINHf5gyQUiEIA&callback=initMap" async defer></script>
 </html>

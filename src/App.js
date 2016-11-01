@@ -14,6 +14,8 @@ class App extends React.Component {
         super()
 
         this.state = {
+            allPets: sessionStorage.allPets != undefined ? JSON.parse(sessionStorage.allPets)  : [],
+            myPets: sessionStorage.myPets != undefined ? JSON.parse(sessionStorage.myPets)  : [],
             divPosition: {left: '0px'},
             activeScreen: '',
             loggedIn : (sessionStorage.loggedIn != undefined ? sessionStorage.loggedIn=="true" : false),
@@ -22,15 +24,13 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-            //For the moment, I'm using localStorage as db. I specified the initial data.
         this.saveNewPet = this.saveNewPet.bind(this);
-        this.loadPets(); //voor testen rails sessionstorage
     }
 
-    loadPets() {
+    loadMyPets() {
         let component = this;
         jQuery.ajax({
-            url: 'http://localhost:5000/api/pets',
+            url: 'http://localhost:5000/api/pets/mypets',
             type: 'GET',
             data: {session_id: sessionStorage.sessionId},
             contentType: 'application/json; charset=utf-8',
@@ -39,25 +39,30 @@ class App extends React.Component {
                 withCredentials: true
            },
            success: function (response) {
-                component.setState({allPets: response.pets});
-                console.log(response)
+                component.setState({myPets: response.pets});
+                sessionStorage.myPets = JSON.stringify(response.pets);
+                // console.log(response)
             },
             error: function () {
                 alert("error");
             }
         })
-        // console.log("sessionStorage: " + sessionStorage.sessionStorageId);
-        // jQuery.getJSON('http://localhost:5000/api/pets', (function(data) {
-        //     this.setState({allPets: data.pets});
-        //     console.log(data);
-        // }).bind(this))
+    }
+
+    loadAllPets() {
+        console.log("sessionStorage: " + sessionStorage.sessionStorageId);
+        jQuery.getJSON('http://localhost:5000/api/pets', (function(data) {
+            this.setState({allPets: data.pets});
+            sessionStorage.allPets = JSON.stringify(data.pets);
+            // console.log(data);
+        }).bind(this))
     }
 
     toggleLogin() {
         console.log("start toggleLogin<-App.js");
-
-        this.loadPets();
-        this.setState({startPage: "lo gin"});
+        this.loadAllPets();
+        this.loadMyPets();
+        this.setState({startPage: "login"});
 
         sessionStorage.loggedIn = !this.state.loggedIn;
         this.setState({loggedIn : !this.state.loggedIn});
@@ -105,12 +110,15 @@ class App extends React.Component {
         //ajax post newPet
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:5000/api/pets.json",
+            url: "http://localhost:5000/api/pets",
             data: JSON.stringify({
                 pet: newPet
             }),
             contentType: "application/json",
-            dataType: "json"
+            dataType: "json",
+            xhrFields: {
+                withCredentials: true
+           },
         }).done(function(data) {
             console.log( "saved pet: " + data );
         }).fail(function(error) {
@@ -126,7 +134,7 @@ class App extends React.Component {
         let changedPetList = this.state.allPets.map(function(pet) {
             pet.id == editedPet.id ? editedPet : pet;
         });
-        localStorage.petList = JSON.stringify({ "pets" : changedPetList });
+        localStorage.petList = JSON.stringify({ "pets" : changedPetList }); //use db instead
     }
 
     render() {
@@ -143,7 +151,7 @@ class App extends React.Component {
                                 className={this.state.activeScreen}
                                 style={this.state.divPosition}>
                                 <PetOwner
-                                    allPets = {this.state.allPets}
+                                    myPets = {this.state.myPets}
                                     onClick={this.moveRight.bind(this)}
                                     // saveStateInDB={this.saveStateInDB.bind(this)}
                                     saveNewPet={this.saveNewPet.bind(this)}

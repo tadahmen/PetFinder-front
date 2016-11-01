@@ -1,14 +1,14 @@
 import React from 'react';
 import PetInRadius from './petinradius';
 import jQuery from 'jquery';
-
+import ShowMap from './showmap';
 
 class PetFinder extends React.Component {
     constructor() {
         super()
 
         this.state = {
-            userPosition : [52.3435125, 4.8820532],
+            userPosition : [4.8820532, 52.3435125],
             radius: 0.2,
             petsInRadius : ["haas Joos"]
         }
@@ -22,6 +22,7 @@ class PetFinder extends React.Component {
     findPets() {
         console.log("start: PetFinder.js->findPets()")
         console.log("radius is: " + this.state.radius);
+
         let component = this;
 
         function withinDistance(pet) {
@@ -30,11 +31,12 @@ class PetFinder extends React.Component {
             if (pet.lastSeen == undefined) {
                 return false;
             }
-            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat));
-            console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius);
-            return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.long, pet.lastSeen.lat) < component.state.radius;
+            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat));
+            console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat) < component.state.radius);
+            return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat) < component.state.radius;
             //can later on use google api function instead of getDistanceInKm()
         }
+
         let allPets = this.props.allPets;
         this.setState({ petsInRadius : allPets.filter(withinDistance) })
     }
@@ -57,10 +59,10 @@ class PetFinder extends React.Component {
     }
 
     showPetsInRadius() {
-        console.log("start showPetsInRadius<-PatFinder.js")
+        // console.log("start showPetsInRadius<-PatFinder.js")
         let component = this;
         return this.state.petsInRadius.map(function(pet) {
-            console.log("pet sent as prop: " + pet);
+            // console.log("pet sent as prop: " + pet);
             return <PetInRadius
                 key={pet.id}
                 pet={pet}
@@ -71,7 +73,8 @@ class PetFinder extends React.Component {
 
     changeRadius() {
         this.setState({radius: this.refs.radius.value});
-        this.findPets();
+        let component = this;
+        setTimeout(function(){component.findPets()}, 10);
     }
 
     showRadius() {
@@ -93,21 +96,31 @@ class PetFinder extends React.Component {
                 { /*just for testing purposes:*/}
                 <p> your position: </p>
                 <input ref="userPosition" defaultValue="52.3435125, 4.8820532"/>
+
                 <p> radius: </p>
-                <input
-                    ref='radius'
-                    type = 'range'
-                    defaultValue = "0.1" max="10" step="0.1"
-                    onChange = {this.changeRadius.bind(this)}
-                />
-                <p> {this.showRadius()} </p>
+                <div id = 'radius-slider'>
+                    <input
+                        ref='radius'
+                        type = 'range'
+                        defaultValue = "0.1" max="10" step="0.1"
+                        onChange = {this.changeRadius.bind(this)}
+                    />
+                    <p> {this.showRadius()} </p>
+                </div>
                 <button onClick={this.findPets.bind(this)}> find pets </button>
 
-                <p> pets nearby: </p>
-                <ul> {this.showPetsInRadius()} </ul>
+                <div id = 'pets-in-radius'>
+                    <ShowMap
+                        allPets = {this.props.allPets}
+                        radius = {this.state.radius}
+                    />
+                    <div id = 'pet-list'>
+                        <p> pets nearby: </p>
+                        <ul> {this.showPetsInRadius()} </ul>
+                    </div>
 
-                <div id="map"></div>
 
+                </div>
             </div>
         );
     }
