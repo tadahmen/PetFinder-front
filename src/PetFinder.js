@@ -1,7 +1,7 @@
 import React from 'react';
 import PetInRadius from './petinradius';
 import jQuery from 'jquery';
-import FinderMap from './findermap';
+import ShowMap from './showmap';
 
 class PetFinder extends React.Component {
     constructor() {
@@ -98,23 +98,29 @@ class PetFinder extends React.Component {
                 <input ref="userPosition" defaultValue="52.3435125, 4.8820532"/>
 
                 <p> radius: </p>
-                <input
-                    ref='radius'
-                    type = 'range'
-                    defaultValue = "0.1" max="10" step="0.1"
-                    onChange = {this.changeRadius.bind(this)}
-                />
-                <p> {this.showRadius()} </p>
+                <div id = 'radius-slider'>
+                    <input
+                        ref='radius'
+                        type = 'range'
+                        defaultValue = "0.1" max="10" step="0.1"
+                        onChange = {this.changeRadius.bind(this)}
+                    />
+                    <p> {this.showRadius()} </p>
+                </div>
                 <button onClick={this.findPets.bind(this)}> find pets </button>
 
-                <p> pets nearby: </p>
-                <ul> {this.showPetsInRadius()} </ul>
+                <div id = 'pets-in-radius'>
+                    <ShowMap
+                        allPets = {this.props.allPets}
+                        radius = {this.state.radius}
+                    />
+                    <div id = 'pet-list'>
+                        <p> pets nearby: </p>
+                        <ul> {this.showPetsInRadius()} </ul>
+                    </div>
 
-                <FinderMap
-                    allPets = {this.props.allPets}
-                    radius = {this.state.radius}
-                />
 
+                </div>
             </div>
         );
     }

@@ -27,7 +27,7 @@ class Pets extends React.Component {
       return (
           <div>
               <p> missing pets:</p>
-              <table id= "pet-list">
+              <table id= "my-pet-list">
                 <thead>
                     <tr>
                         <th>pet name</th>

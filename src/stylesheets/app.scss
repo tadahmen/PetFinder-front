@@ -1,6 +1,5 @@
 @import 'reset';
 
-
 //Variables===============================================
 $primary-color: #2DEDC0;
 $secondary-color: white;
@@ -78,6 +77,10 @@ body {
 
 li {
     list-style-type: none;
+}
+
+.inline-block {
+    display: inline-block;
 }
 
 #header {
@@ -177,10 +180,15 @@ li {
     position: relative;
     transition: transform 1s;
     -webkit-transition: transform 1s;
-    #map {
-        height: 250px;
-        border-radius: $rounded-corner
+    #pets-in-radius {
+        @include center-content;
+        #pet-list {width: 30%}
+        #show-map{width: 70%}
+        #map {
+            height: 230px;
+            border-radius: $rounded-corner;
+        }
     }
 }
 
-#pet-list {list-style-type: none;}
+#my-pet-list {list-style-type: none;}

@@ -110,12 +110,15 @@ class App extends React.Component {
         //ajax post newPet
         jQuery.ajax({
             type: "POST",
-            url: "http://localhost:5000/api/pets.json",
+            url: "http://localhost:5000/api/pets",
             data: JSON.stringify({
                 pet: newPet
             }),
             contentType: "application/json",
-            dataType: "json"
+            dataType: "json",
+            xhrFields: {
+                withCredentials: true
+           },
         }).done(function(data) {
             console.log( "saved pet: " + data );
         }).fail(function(error) {

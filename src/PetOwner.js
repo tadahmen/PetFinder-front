@@ -17,6 +17,7 @@ class PetOwner extends React.Component {
                     myPets = {this.props.myPets}
                     onChange = {this.props.onChange.bind(this)}/>
                 <AddPet saveNewPet = {this.props.saveNewPet.bind(this)}/>
+                <google-map latitude="37.77493" longitude="-122.41942" api-key="AIzaSyC7YAekZlk5wu9wbtpstsINHf5gyQUiEIA"></google-map>
             </div>
         );
     }
