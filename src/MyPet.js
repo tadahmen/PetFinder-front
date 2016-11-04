@@ -49,7 +49,7 @@ class MyPet extends React.Component {
         }
         return style;
     }
-    
+
 
     render() {
         return (
@@ -58,17 +58,19 @@ class MyPet extends React.Component {
                     style = {this.style()}
                     onMouseEnter={this.showOptions.bind(this)}
                     onMouseLeave={this.hideOptions.bind(this)}>
+
                     <td> {this.props.pet.name} </td>
                     <td> {this.props.pet.species} </td>
                     <td>
-                        {this.state.showOptions
-                            ? (this.props.pet.status != "found"
-                                ?   <span>
-                                        <button onClick={this.saveNewStatus.bind(this, "remove")}> remove </button>
-                                        <button onClick={this.saveNewStatus.bind(this, "found")}> found </button>
-                                    </span>
+                        {this.state.showOptions ?
+                            (this.props.pet.status != "found" ?
+                                <span>
+                                    <button onClick={this.saveNewStatus.bind(this, "remove")}> remove </button>
+                                    <button onClick={this.saveNewStatus.bind(this, "found")}> found </button>
+                                </span>
                                 :   <button disabled> has been found </button>
-                            ) : ''
+                            )
+                            : ''
                         }
                     </td>
                 </tr>
