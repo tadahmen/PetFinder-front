@@ -29,7 +29,7 @@ class PetInRadius extends React.Component {
         // ev.preventDefault();
         let editedPet = this.props.pet;
         editedPet.status = "reported-found";
-        this.props.onChange(editedPet, ev);
+        this.props.onChange(editedPet);
     }
 
     render() {

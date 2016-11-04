@@ -27,6 +27,7 @@ class App extends React.Component {
         this.saveNewPet = this.saveNewPet.bind(this);
     }
 
+    //for loading only the pets owned by the current user
     loadMyPets() {
         let component = this;
         jQuery.ajax({
@@ -58,6 +59,7 @@ class App extends React.Component {
         }).bind(this))
     }
 
+    //sets login to true or false
     toggleLogin() {
         console.log("start toggleLogin<-App.js");
         this.loadAllPets();
@@ -68,10 +70,12 @@ class App extends React.Component {
         this.setState({loggedIn : !this.state.loggedIn});
     }
 
+    //for setting the start page to 'login' or 'sign up'
     setStartPage(type) {
         this.setState({startPage: type});
     }
 
+    //for sliding the UI tiles right
     moveRight() {
         // console.log("from App->moveRight()");
         this.setState({
@@ -80,6 +84,7 @@ class App extends React.Component {
         });
     }
 
+    //for sliding the UI tiles left
     moveLeft() {
         this.setState({
             divPosition: {transition: 'transform 1s ease-in-out', transform: 'translate(-45%, 0)'},
@@ -87,6 +92,7 @@ class App extends React.Component {
         });
     }
 
+    //for sliding the UI tiles to initial position (center)
     initialPosition() {
         this.setState({
             divPosition: {transition: 'transform 1s ease-in-out', transform: 'translate(0, 0)'},
@@ -94,7 +100,8 @@ class App extends React.Component {
         })
     }
 
-    saveNewPet(newPet, ev) {    //saves a new pet in the db.
+    //saves a new pet in the db.
+    saveNewPet(newPet, ev) {
         // ev.preventDefault();
         // ev.stopPropagation();
         // ev.nativeEvent.stopImmediatePropagation();
@@ -126,15 +133,22 @@ class App extends React.Component {
         });
     }
 
-    saveEditedPet(editedPet, ev) {     //saves changed state of existing pet in db
-        // ev.preventDefault();
-        // ev.stopPropagation();
-        // ev.nativeEvent.stopImmediatePropagation();
-
+    //updates the db, and updates the state of both owner and finder
+    saveEditedPet(editedPet) {
         let changedPetList = this.state.allPets.map(function(pet) {
-            pet.id == editedPet.id ? editedPet : pet;
+            return pet.id == editedPet.id ? editedPet : pet;
         });
-        localStorage.petList = JSON.stringify({ "pets" : changedPetList }); //use db instead
+        let changedMyPetList = this.state.myPets.map(function(pet) {
+            return pet.id == editedPet.id ? editedPet : pet;
+        });
+        this.setState({
+            allPets: changedPetList,
+            myPets: changedMyPetList
+        });
+        // localStorage.allPets = JSON.stringify({
+        //     "allPets" : changedAllPetsList,
+        //     "myPets" : changedMyPetsList
+        // }); //use db instead
     }
 
     render() {

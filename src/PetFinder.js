@@ -8,39 +8,46 @@ class PetFinder extends React.Component {
         super()
 
         this.state = {
-            userPosition : [4.8820532, 52.3435125],
+            userPosition : {lat: 52.343468, lng: 4.879921},
             radius: 0.2,
-            petsInRadius : ["haas Joos"]
+            petsInRadius : []
         }
-        let petsInRadius = this.state.petsInRadius;
     }
 
     componentDidMount() {
-        this.findPets();
+        this.findPets(this.state.radius);
     }
 
-    findPets() {
-        console.log("start: PetFinder.js->findPets()")
-        console.log("radius is: " + this.state.radius);
+    componentWillReceiveProps(nextProps) {
+        this.findPets(this.state.radius);
+    }
 
+    setUserPosition(userPosition) {
+        setState({ userPosition: userPosition })
+    }
+
+    // makes array containing all pets within a certain radius and puts it in the component state:
+    findPets(radius) {
+        // console.log("start: PetFinder.js->findPets()");
         let component = this;
+        let allPets = this.props.allPets;
+        let userPosition = this.state.userPosition;
 
+        this.setState({ petsInRadius : allPets.filter(withinDistance) })
+
+        //checks if pet is within radius and returns true or false:
         function withinDistance(pet) {
-            console.log("in withinDistance()<-PetFinder.js");
-
+            //if pet has no location, skip it:
             if (pet.lastSeen == undefined) {
                 return false;
             }
-            console.log("distance is: " + component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat));
-            console.log(component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat) < component.state.radius);
-            return component.getDistanceInKm(...component.state.userPosition, pet.lastSeen.lng, pet.lastSeen.lat) < component.state.radius;
+
+            return component.getDistanceInKm(userPosition.lat, userPosition.lng , pet.lastSeen.lat, pet.lastSeen.lng) < radius;
             //can later on use google api function instead of getDistanceInKm()
         }
-
-        let allPets = this.props.allPets;
-        this.setState({ petsInRadius : allPets.filter(withinDistance) })
     }
 
+    //returns distance between two points on earth:
     getDistanceInKm(lat1,lon1,lat2,lon2) {
         function deg2rad(deg) {
             return deg * (Math.PI/180)
@@ -58,6 +65,7 @@ class PetFinder extends React.Component {
         return d;
     }
 
+    // shows all pets in state 'petsInRadius'
     showPetsInRadius() {
         // console.log("start showPetsInRadius<-PatFinder.js")
         let component = this;
@@ -71,10 +79,11 @@ class PetFinder extends React.Component {
         })
     }
 
+    //sets radius to value of slider
     changeRadius() {
-        this.setState({radius: this.refs.radius.value});
-        let component = this;
-        setTimeout(function(){component.findPets()}, 10);
+        let radius = this.refs.radius.value;
+        this.setState({radius: radius});
+        this.findPets(radius)
     }
 
     showRadius() {
@@ -95,7 +104,7 @@ class PetFinder extends React.Component {
 
                 { /*just for testing purposes:*/}
                 <p> your position: </p>
-                <input ref="userPosition" defaultValue="52.3435125, 4.8820532"/>
+                <input ref = "userPosition" defaultValue = {"lat: " + this.state.userPosition.lat + ", lng: " + this.state.userPosition.lng}/>
 
                 <p> radius: </p>
                 <div id = 'radius-slider'>
