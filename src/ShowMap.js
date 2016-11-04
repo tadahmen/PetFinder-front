@@ -3,43 +3,41 @@ import Script from 'react-load-script';
 import ReactDOM from 'react-dom';
 import scriptLoader from 'react-async-script-loader'
 
-var googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyC7YAekZlk5wu9wbtpstsINHf5gyQUiEIA'
-});
 
 class ShowMap extends React.Component {
 
+    //sets zoom (for google map) in line with chosen search radius
     radiusToZoom (radius){
         let zoom = Math.round(14-Math.log(radius)/Math.LN2);
         console.log("zoom is: " + zoom);
         return zoom;
     }
 
+    //puts the googlemaps callback function as script in document
     showMap() {
-                window.allPets = this.props.allPets;
-                window.zoom = this.radiusToZoom(this.props.radius);
+        window.allPets = this.props.allPets;
+        window.zoom = this.radiusToZoom(this.props.radius);
 
-                function initFinderMap() {
-                    let map = new google.maps.Map(document.getElementById('map'), {
-                        center: {lat: 52.3435125, lng: 4.8820532},
-                        zoom: window.zoom
-                    });
+        // the google maps callback function
+        function initFinderMap() {
+            let map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 52.3435125, lng: 4.8820532},
+                zoom: window.zoom
+            });
+            // let infoWindow = new google.maps.InfoWindow({map: map});
+            let pets = window.allPets;
+            let petMarkers = [];
 
-                    console.log("HET WERKT!! allPets is: " + window.allPets);
-                    let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    let pets = window.allPets;
+            pets.map(function(pet,i) {
+                petMarkers[i] = new google.maps.Marker({
+                    map: map,
+                    position: pet.lastSeen,
+                    label: pet.name,
+                });
+            });
+        }
 
-                    let markers = [];
-
-                    pets.map(function(pet,i) {
-                        markers[i] = new google.maps.Marker({
-                          position: pet.lastSeen,
-                          label: pet.name,
-                          map: map
-                        });
-                    });
-                  }
-                  return initFinderMap;
+        return initFinderMap;
     }
 
     render() {
