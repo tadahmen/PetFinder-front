@@ -1,10 +1,15 @@
 import React from 'react';
 import Script from 'react-load-script';
 import ReactDOM from 'react-dom';
-import scriptLoader from 'react-async-script-loader'
+import scriptLoader from 'react-async-script-loader';
+import jQuery from 'jquery';
 
 
 class ShowMap extends React.Component {
+    constructor() {
+        super()
+        this.state = {}
+    }
 
     //sets zoom (for google map) in line with chosen search radius
     radiusToZoom (radius){
@@ -72,12 +77,21 @@ class ShowMap extends React.Component {
         return initFinderMap;
     }
 
+    loadMapApi() {
+        let url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC7YAekZlk5wu9wbtpstsINHf5gyQUiEIA&callback=initFinderMap";
+        let component = this;
+        jQuery.getScript(url, (function(data) {
+            eval(data);
+            this.setState({mapLoaded: true})
+        }).bind(this)
+    )}
+
     render() {
         return (
             <div id='show-map'>
                 <div id="map"></div>
                 {document.getElementById('findermap-script').innerHTML = this.showMap()}
-                <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7YAekZlk5wu9wbtpstsINHf5gyQUiEIA&callback=initFinderMap"/>
+                {this.state.mapLoaded ? null : this.loadMapApi()}
             </div>
         )
     }

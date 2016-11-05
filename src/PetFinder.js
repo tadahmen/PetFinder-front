@@ -104,7 +104,10 @@ class PetFinder extends React.Component {
 
                 { /*just for testing purposes:*/}
                 <p> your position: </p>
-                <input ref = "userPosition" defaultValue = {"lat: " + this.state.userPosition.lat + ", lng: " + this.state.userPosition.lng}/>
+                <p> latitude: </p>
+                <input ref = "userPositionLat" defaultValue = {this.state.userPosition.lat}/>
+                <p> longitude: </p>
+                <input ref = "userPositionLng" defaultValue = {this.state.userPosition.lng}/>
 
                 <p> radius: </p>
                 <div id = 'radius-slider'>
