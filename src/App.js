@@ -109,7 +109,12 @@ class App extends React.Component {
         //save inputted pet in state:
         let id=this.state.allPets.length+1;
         let newPetList = this.state.allPets.concat({"id" : id, "name" : newPet.name, "species": newPet.species});
-        this.setState({allPets: newPetList});
+        let newMyPetList = this.state.myPets.concat({"name" : newPet.name, "species": newPet.species});
+        this.setState({
+            allPets: newPetList,
+            myPets: newMyPetList
+        });
+
 
         //clear input:
         localStorage.inputState = JSON.stringify({"lastInput" : " "});
@@ -145,6 +150,24 @@ class App extends React.Component {
             allPets: changedPetList,
             myPets: changedMyPetList
         });
+
+        jQuery.ajax({
+            type: "PUT",
+            url: "http://localhost:5000/api/pets/" + editedPet.id,
+            data: JSON.stringify({
+                pet: editedPet
+            }),
+            contentType: "application/json",
+            dataType: "json",
+        //     xhrFields: {
+        //         withCredentials: true
+        //    },
+        }).done(function(data) {
+            console.log( "change to pet was saved: " + data );
+        }).fail(function(error) {
+            console.log("change to pet wasn't saved: " + error);
+        });
+
         // localStorage.allPets = JSON.stringify({
         //     "allPets" : changedAllPetsList,
         //     "myPets" : changedMyPetsList
