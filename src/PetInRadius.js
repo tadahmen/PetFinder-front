@@ -35,22 +35,27 @@ class PetInRadius extends React.Component {
     render() {
         return (
             <div id="pet-in-finder">
-            <li
-                style = {this.props.pet.status == "found" ? {color: 'green'} : (this.props.pet.status == "reported-found" ? {color: 'orange'} : {color : 'white'})}
-                onMouseEnter={this.showOptions.bind(this)}
-                onMouseLeave={this.hideOptions.bind(this)}
-            >
-                {this.props.pet.name}
-                {this.state.showOptions
-                    ? (this.props.pet.status != "found"
-                        ?   <span>
+                {/*show pet as list item. And show options for an individual pet (report as found, add to my list, etc.) only on mouseover*/}
+                <li
+                    style = {
+                        this.props.pet.status == "found" ?
+                            {color: 'green'}
+                        :   (this.props.pet.status == "reported-found" ? {color: 'orange'} : {color : 'white'})
+                    }
+                    onMouseEnter={this.showOptions.bind(this)}
+                    onMouseLeave={this.hideOptions.bind(this)}
+                >
+                    {this.props.pet.name}
+                    {this.state.showOptions ?
+                        (this.props.pet.status != "found" ?
+                            <span>
                                 <button onClick={this.addToTargetList.bind(this)}> add </button>
                                 <button onClick={this.saveNewStatus.bind(this)}> found </button>
                             </span>
-                        :   <button disabled> has been found </button>
-                    ) : ''
-                }
-            </li>
+                            :   <button disabled> has been found </button>
+                        ) : ''
+                    }
+                </li>
             </div>
         );
     }

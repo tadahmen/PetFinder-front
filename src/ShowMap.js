@@ -11,33 +11,31 @@ class ShowMap extends React.Component {
         this.state = {}
     }
 
-    //sets zoom (for google map) in line with chosen search radius
-    radiusToZoom (radius){
-        let zoom = Math.round(14-Math.log(radius)/Math.LN2);
-        console.log("zoom is: " + zoom);
-        return zoom;
+    componentWillMount() {
+        //Put the googlemaps callback function as script in document:
+        document.getElementById('findermap-script').innerHTML = this.setInitMapScript();
     }
 
-    //puts the googlemaps callback function as script in document
-    showMap() {
-        window.allPets = this.props.allPets;
-        window.zoom = this.radiusToZoom(this.props.radius);
-
+    //Returns the googlemaps callback function (to be put as script in the document).
+    //using the window object, to set and access values that are shared with react components.
+    setInitMapScript() {
         // the google maps callback function
         function initFinderMap() {
             let map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 52.3435125, lng: 4.8820532},
                 zoom: window.zoom
             });
-            // let infoWindow = new google.maps.InfoWindow({map: map});
+
             let pets = window.allPets;
             let petMarkers = [];
             let userIcon = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Blue_0080ff_pog.svg/17px-Blue_0080ff_pog.svg.png";
+            //create marker for uses:
             let userMarker = new google.maps.Marker({
                 map: map,
                 icon: userIcon
             });
 
+            //create markers for missing pets:
             pets.map(function(pet,i) {
                 petMarkers[i] = new google.maps.Marker({
                     map: map,
@@ -47,6 +45,7 @@ class ShowMap extends React.Component {
                 });
             });
 
+            //get geolocation of user:
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     let pos = {
@@ -57,14 +56,16 @@ class ShowMap extends React.Component {
                     map.setCenter(pos);
                     window.userPosition = pos;
                 }, function() {
-                    handleLocationError(true, infoWindow, map.getCenter());
+                    handleLocationError(true, map.getCenter());
                 });
             } else {
-              // Browser doesn't support Geolocation
-                handleLocationError(false, infoWindow, map.getCenter());
+                // If browser doesn't support Geolocation:
+                handleLocationError(false, map.getCenter());
             }
 
-            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            //show error info
+            function handleLocationError(browserHasGeolocation, pos) {
+                let infoWindow = new google.maps.InfoWindow({map: map});
                 infoWindow.setPosition(pos);
                 infoWindow.setContent(
                     browserHasGeolocation ?
@@ -73,25 +74,39 @@ class ShowMap extends React.Component {
                 );
             }
         }
-
         return initFinderMap;
+    }
+
+    updateMap() {
+        window.allPets = this.props.allPets;
+        window.zoom = this.radiusToZoom(this.props.radius);
+        this.loadMapApi()
     }
 
     loadMapApi() {
         let url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC7YAekZlk5wu9wbtpstsINHf5gyQUiEIA&callback=initFinderMap";
-        let component = this;
-        jQuery.getScript(url, (function(data) {
-            eval(data);
-            this.setState({mapLoaded: true})
-        }).bind(this)
-    )}
+        jQuery.getScript(
+            url,
+            (function(data) {
+                window.mapApi = data;
+                this.props.setMapUpdated()
+            }).bind(this)
+        )
+    }
+
+    //sets zoom (for google map) in line with chosen search radius
+    radiusToZoom (radius){
+        let zoom = Math.round(13.2-Math.log(radius)/Math.LN2);
+        console.log("zoom is: " + zoom);
+        return zoom;
+    }
+
 
     render() {
         return (
             <div id='show-map'>
                 <div id="map"></div>
-                {document.getElementById('findermap-script').innerHTML = this.showMap()}
-                {this.state.mapLoaded ? null : this.loadMapApi()}
+                {this.props.isMapUpdated ? null : this.updateMap()}
             </div>
         )
     }

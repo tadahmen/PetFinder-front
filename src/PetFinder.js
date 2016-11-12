@@ -8,7 +8,7 @@ class PetFinder extends React.Component {
         super()
 
         this.state = {
-            userPosition : {lat: 52.343468, lng: 4.879921},
+            userPosition : window.userPosition != undefined ? window.userPosition : {lat: 52.343468, lng: 4.879921},
             radius: 0.2,
             petsInRadius : []
         }
@@ -20,10 +20,11 @@ class PetFinder extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.findPets(this.state.radius);
+        this.setUserPosition(window.userPosition)
     }
 
     setUserPosition(userPosition) {
-        setState({ userPosition: userPosition })
+        this.setState({ userPosition: userPosition })
     }
 
     // makes array containing all pets within a certain radius and puts it in the component state:
@@ -82,7 +83,10 @@ class PetFinder extends React.Component {
     //sets radius to value of slider
     changeRadius() {
         let radius = this.refs.radius.value;
-        this.setState({radius: radius});
+        this.setState({
+            radius: radius,
+            isMapUpdated: false
+        });
         this.findPets(radius)
     }
 
@@ -97,34 +101,32 @@ class PetFinder extends React.Component {
         }
     }
 
+    setMapUpdated() {
+        this.setState({isMapUpdated: true})
+    }
+
     render() {
         return (
             <div id="pet-finder" onClick={this.props.onClick}>
                 <h2 className="tile-title"> Find Pets </h2>
-
-                { /*just for testing purposes:*/}
-                <p> your position: </p>
-                <p> latitude: </p>
-                <input ref = "userPositionLat" defaultValue = {this.state.userPosition.lat}/>
-                <p> longitude: </p>
-                <input ref = "userPositionLng" defaultValue = {this.state.userPosition.lng}/>
 
                 <p> radius: </p>
                 <div id = 'radius-slider'>
                     <input
                         ref='radius'
                         type = 'range'
-                        defaultValue = "0.1" max="10" step="0.1"
+                        defaultValue = "0.2" min="0.1" max="10" step="0.1"
                         onChange = {this.changeRadius.bind(this)}
                     />
                     <p> {this.showRadius()} </p>
                 </div>
-                <button onClick={this.findPets.bind(this)}> find pets </button>
 
                 <div id = 'pets-in-radius'>
                     <ShowMap
                         allPets = {this.props.allPets}
                         radius = {this.state.radius}
+                        isMapUpdated = {this.state.isMapUpdated}
+                        setMapUpdated = {this.setMapUpdated.bind(this)}
                     />
                     <div id = 'pet-list'>
                         <p> pets nearby: </p>
