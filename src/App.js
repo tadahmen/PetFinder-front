@@ -150,6 +150,24 @@ class App extends React.Component {
             allPets: changedPetList,
             myPets: changedMyPetList
         });
+
+        jQuery.ajax({
+            type: "PUT",
+            url: "http://localhost:5000/api/pets/" + editedPet.id,
+            data: JSON.stringify({
+                pet: editedPet
+            }),
+            contentType: "application/json",
+            dataType: "json",
+        //     xhrFields: {
+        //         withCredentials: true
+        //    },
+        }).done(function(data) {
+            console.log( "change to pet was saved: " + data );
+        }).fail(function(error) {
+            console.log("change to pet wasn't saved: " + error);
+        });
+
         // localStorage.allPets = JSON.stringify({
         //     "allPets" : changedAllPetsList,
         //     "myPets" : changedMyPetsList
