@@ -110,16 +110,22 @@ class App extends React.Component {
         let id=this.state.allPets.length+1;
         let newPetList = this.state.allPets.concat({"id" : id, "name" : newPet.name, "species": newPet.species});
         let newMyPetList = this.state.myPets.concat({"name" : newPet.name, "species": newPet.species});
+
+        //put new petlists in state (to show new pet immediately in view)
         this.setState({
             allPets: newPetList,
             myPets: newMyPetList
         });
 
+        //save changes in session storage (to 'remember' the new pet when page refreshes)
+        sessionStorage.allPets = JSON.stringify(newPetList);
+        sessionStorage.myPets = JSON.stringify(newMyPetList);
 
-        //clear input:
+
+        //clear memory of last input:
         localStorage.inputState = JSON.stringify({"lastInput" : " "});
 
-        //ajax post newPet
+        //save new pet in db:
         jQuery.ajax({
             type: "POST",
             url: "http://localhost:5000/api/pets",
@@ -146,10 +152,15 @@ class App extends React.Component {
         let changedMyPetList = this.state.myPets.map(function(pet) {
             return pet.id == editedPet.id ? editedPet : pet;
         });
+
         this.setState({
             allPets: changedPetList,
             myPets: changedMyPetList
         });
+
+        //save changes in session storage (to 'remember' the new pet when page refreshes)
+        sessionStorage.allPets = JSON.stringify(changedPetList);
+        sessionStorage.myPets = JSON.stringify(changedMyPetList);
 
         jQuery.ajax({
             type: "PUT",
