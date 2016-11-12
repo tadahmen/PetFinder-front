@@ -109,7 +109,12 @@ class App extends React.Component {
         //save inputted pet in state:
         let id=this.state.allPets.length+1;
         let newPetList = this.state.allPets.concat({"id" : id, "name" : newPet.name, "species": newPet.species});
-        this.setState({allPets: newPetList});
+        let newMyPetList = this.state.myPets.concat({"name" : newPet.name, "species": newPet.species});
+        this.setState({
+            allPets: newPetList,
+            myPets: newMyPetList
+        });
+
 
         //clear input:
         localStorage.inputState = JSON.stringify({"lastInput" : " "});
